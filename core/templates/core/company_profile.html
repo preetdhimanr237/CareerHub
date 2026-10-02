@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile</title>
+</head>
+<body>
+
+    <h2>Company Profile</h2>
+
+    <div>
+
+        <h3>{{ profile.company_name }}</h3>
+
+        <p>
+            Location:
+            {{ profile.location }}
+        </p>
+
+        <p>
+            Website:
+            {% if profile.website %}
+                <a href="{{ profile.website }}" target="_blank">
+                    {{ profile.website }}
+                </a>
+            {% else %}
+                Not provided
+            {% endif %}
+        </p>
+
+        <p>
+            Description:
+            {{ profile.description }}
+        </p>
+
+        {% if profile.logo %}
+            <img
+                src="{{ profile.logo.url }}"
+                alt="Company Logo"
+                width="150"
+                height="150"
+            >
+        {% else %}
+            <p>No company logo uploaded.</p>
+        {% endif %}
+        <a href="{% url 'edit_company_profile' %}">
+            <button type="button">Edit Profile</button>
+        </a>
+
+    </div>
+
+</body>
+</html>

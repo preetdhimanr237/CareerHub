@@ -1,0 +1,33 @@
+<div class="container">
+
+    {% if profile.profile_image %}
+        <img src="{{ profile.profile_image.url }}"
+             alt="Profile Image"
+             width="150">
+    {% else %}
+        <p>No profile image uploaded.</p>
+    {% endif %}
+
+    <p>Username: {{ profile.user.username }}</p>
+    <p>Phone: {{ profile.phone }}</p>
+    <p>Education: {{ profile.education }}</p>
+    <p>Skills: {{ profile.skills }}</p>
+    <p>Bio: {{ profile.bio }}</p>
+    <p>Location: {{ profile.location }}</p>
+
+    {% if profile.resume %}
+        <p>
+            Resume:
+            <a href="{{ profile.resume.url }}" target="_blank">
+                View Resume
+            </a>
+        </p>
+    {% else %}
+        <p>No resume uploaded.</p>
+    {% endif %}
+
+    <a href="{% url 'edit_student_profile' %}">
+        <button>Edit Profile</button>
+    </a>
+
+</div>

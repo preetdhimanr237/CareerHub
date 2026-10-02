@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job List</title>
+</head>
+<body>
+    <h2>Jobs Available </h2>
+
+    <form method="GET">
+       
+    <input
+        type="text"
+        name="search"
+        placeholder="Job title..."
+        value="{{ search }}"
+    >
+
+    <input
+        type="text"
+        name="location"
+        placeholder="Location..."
+        value="{{ location }}">
+
+    <input
+        type="text"
+        name="job_type"
+        placeholder="Job type..."
+        value="{{ job_type }}">
+
+    <button type="submit">Search</button>
+
+</form>
+    </form>
+    {% for job in jobs %}
+
+    <h1>{{ job.title }}</h1>
+
+    <p>
+        <strong>Company:</strong>
+        {{ job.company.company_name }}
+    </p>
+
+    <p>
+        <strong>Location:</strong>
+        {{ job.location }}
+    </p>
+
+    <p>
+        <strong>Salary:</strong>
+        {{ job.salary }}
+    </p>
+    <p>
+        <strong>Job Type:</strong>
+        {{ job.job_type }}
+    </p>
+
+    <a href="{% url 'job_detail' job.id %}">
+        <button>View</button>
+    </a>
+
+    <hr>
+
+{% empty %}
+
+    <p>No jobs found for "{{ search }}".</p>
+
+{% endfor %}
+
+
+
+</body>
+</html>

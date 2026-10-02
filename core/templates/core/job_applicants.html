@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Applicants</title>
+</head>
+<body>
+
+    <h2>Applicants for {{ job.title }}</h2>
+
+    {% for application in applications %}
+
+        <div>
+            <h3>{{ application.student.user.username }}</h3>
+
+            <p>
+                Education:
+                {{ application.student.education }}
+            </p>
+
+            <p>
+                Skills:
+                {{ application.student.skills }}
+            </p>
+
+            <p>
+                Location:
+                {{ application.student.location }}
+            </p>
+
+            {% if application.student.resume %}
+                <p>
+                    <a href="{{ application.student.resume.url }}" target="_blank">
+                        View Resume
+                    </a>
+                </p>
+            {% endif %}
+
+            <p>
+                Status: {{ application.status }}
+            </p>
+
+            <form method="POST" action="{% url 'update_application_status' application.id %}">
+                {% csrf_token %}
+
+                <select name="status">
+                    <option value="Pending">Pending</option>
+                    <option value="Shortlisted">Shortlisted</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+
+                <button type="submit">Update Status</button>
+            </form>
+
+            <hr>
+        </div>
+
+    {% empty %}
+
+        <p>No applicants yet.</p>
+
+    {% endfor %}
+
+</body>
+</html>

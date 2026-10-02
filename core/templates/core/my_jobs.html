@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Jobs</title>
+</head>
+<body>
+
+    <h2>My Jobs</h2>
+
+    {% for job in jobs %}
+
+        <div>
+            <h3>{{ job.title }}</h3>
+
+            <p>
+                Location: {{ job.location }}
+            </p>
+
+            <p>
+                Salary: {{ job.salary }}
+            </p>
+
+            <p>
+                Job Type: {{ job.job_type }}
+            </p>
+
+            <a href="{% url 'job_applicants' job.id %}">
+                <button>View Applicants</button>
+            </a>
+
+            <hr>
+        </div>
+
+    {% empty %}
+
+        <p>No jobs posted yet.</p>
+
+    {% endfor %}
+
+</body>
+</html>
