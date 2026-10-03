@@ -49,15 +49,16 @@ class Application(models.Model):
     applied_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20,  default='Pending')
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['student', 'job'],
+                name='unique_student_job_application'
+            )
+        ]
+
+
+
     def __str__(self):
             return self.student.user.username
     
-
-
-
-
-
-
-
-
-

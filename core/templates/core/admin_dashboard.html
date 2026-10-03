@@ -1,0 +1,112 @@
+{% extends "core/base.html" %}
+
+{% block title %}Admin Dashboard - CareerHub{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Admin Dashboard</h1>
+        <p class="text-muted">
+            Manage and monitor CareerHub.
+        </p>
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Students</h6>
+                    <h2 class="fw-bold">
+                        {{ total_students }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Companies</h6>
+                    <h2 class="fw-bold">
+                        {{ total_companies }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Jobs</h6>
+                    <h2 class="fw-bold">
+                        {{ total_jobs }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Applications</h6>
+                    <h2 class="fw-bold">
+                        {{ total_applications }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Management -->
+
+    <div class="card shadow-sm mt-5">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-3">
+                Management
+            </h4>
+
+            <p class="text-muted">
+                Use Django Admin to manage students, companies,
+                jobs and applications.
+            </p>
+
+            <a
+                href="{% url 'admin:index' %}"
+                class="btn btn-dark me-2"
+            >
+                Open Django Admin
+            </a>
+
+            <a
+                href="{% url 'home' %}"
+                class="btn btn-outline-primary me-2"
+            >
+                Home
+            </a>
+
+            <a
+                href="{% url 'logout' %}"
+                class="btn btn-outline-danger"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

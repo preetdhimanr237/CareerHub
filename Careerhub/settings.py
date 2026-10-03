@@ -132,4 +132,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-LOGIN_URL = '/student_login/'
+# LOGIN_URL = '/student_login/'

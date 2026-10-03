@@ -1,16 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student register</title>
-</head>
-<body>
-    <h1>Student register</h1>
-    <form method='POST'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
-</body>
-</html>
+{% extends "core/base.html" %}
+
+{% block title %}Student Registration - CareerHub{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h2 class="text-center fw-bold mb-4">
+                        Student Registration
+                    </h2>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 mt-2"
+                        >
+                            Create Student Account
+                        </button>
+
+                    </form>
+
+                    <p class="text-center mt-3 mb-0">
+                        Already have an account?
+                        <a href="{% url 'student_login' %}">
+                            Login
+                        </a>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

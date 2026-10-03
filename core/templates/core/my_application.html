@@ -1,47 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Applications</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h2>My Applications</h2>
+{% block title %}My Applications - CareerHub{% endblock %}
 
-    {% for application in applications %}
+{% block content %}
 
-        <div>
-            <h3>{{ application.job.title }}</h3>
+<div class="container">
 
-            <p>
-                Company:
-                {{ application.job.company.company_name }}
-            </p>
+    <!-- Page Heading -->
+    <div class="mb-4">
+        <h1 class="fw-bold">My Applications</h1>
 
-            <p>
-                Location:
-                {{ application.job.location }}
-            </p>
+        <p class="text-muted mb-0">
+            Track the jobs you have applied for.
+        </p>
+    </div>
 
-            <p>
-                Applied On:
-                {{ application.applied_at }}
-            </p>
 
-            <p>
-                Status:
-                {{ application.status }}
-            </p>
+    {% if applications %}
 
-            <hr>
+        <div class="row g-4">
+
+            {% for application in applications %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <!-- Job Title -->
+                            <h4 class="card-title fw-bold">
+                                {{ application.job.title }}
+                            </h4>
+
+                            <!-- Company -->
+                            <p class="mb-2">
+                                <strong>Company:</strong>
+                                {{ application.job.company.company_name }}
+                            </p>
+
+                            <!-- Location -->
+                            <p class="mb-2">
+                                <strong>Location:</strong>
+                                {{ application.job.location }}
+                            </p>
+
+                            <!-- Job Type -->
+                            <p class="mb-2">
+                                <strong>Job Type:</strong>
+                                {{ application.job.job_type }}
+                            </p>
+
+                            <!-- Applied Date -->
+                            <p class="text-muted small">
+                                Applied on:
+                                {{ application.applied_at }}
+                            </p>
+
+                            <hr>
+
+                            <!-- Status -->
+                            <p class="mb-3">
+                                <strong>Status:</strong>
+
+                                {% if application.status == "Pending" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+
+                                {% elif application.status == "Shortlisted" %}
+
+                                    <span class="badge bg-success">
+                                        Shortlisted
+                                    </span>
+
+                                {% elif application.status == "Rejected" %}
+
+                                    <span class="badge bg-danger">
+                                        Rejected
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        {{ application.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </p>
+
+
+                            <!-- View Job -->
+                            <a
+                                href="{% url 'job_detail' application.job.id %}"
+                                class="btn btn-primary w-100"
+                            >
+                                View Job
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
         </div>
 
-    {% empty %}
+    {% else %}
 
-        <p>You have not applied for any job yet.</p>
+        <!-- No Applications -->
+        <div class="text-center py-5">
 
-    {% endfor %}
+            <h3>No Applications Yet</h3>
 
-</body>
-</html>
+            <p class="text-muted">
+                You haven't applied for any jobs yet.
+            </p>
+
+            <a
+                href="{% url 'job_list' %}"
+                class="btn btn-primary"
+            >
+                Browse Jobs
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

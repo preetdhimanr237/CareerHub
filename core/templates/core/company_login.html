@@ -1,21 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Login</title>
-</head>
-<body>
-    <h1>Company login</h1>
-    <form method='POST'>
-        {% csrf_token %}
-        <label>Username</label>
-        <input type="text" name="username">
-        <br><br>
-        <label>Password</label>
-        <input type="text" name="password">
-        <br><br>
-        <button type="submit">Login</button>
-    </form>
-</body>
-</html>
+{% extends "core/base.html" %}
+
+{% block title %}Company Login - CareerHub{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h2 class="text-center fw-bold mb-4">
+                        Company Login
+                    </h2>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                class="form-control"
+                                placeholder="Enter username"
+                                required
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Enter password"
+                                required
+                            >
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-success w-100"
+                        >
+                            Login
+                        </button>
+
+                    </form>
+
+                    <p class="text-center mt-3 mb-0">
+                        Don't have a company account?
+                        <a href="{% url 'register_company' %}">
+                            Register Company
+                        </a>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

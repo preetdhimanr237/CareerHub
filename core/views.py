@@ -3,6 +3,7 @@ from .forms import JobForm, CompanyRegistrationForm ,StudentRegistrationForm, St
 from .models import CompanyProfile, Job ,StudentProfile, Application
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 
 # Create your views here.
@@ -174,11 +175,16 @@ def student_login(request):
 
 
 
+
+
+
 @login_required
 def student_profile(request):
     profile = request.user.studentprofile
 
     return render(request,'core/student_profile.html',{'profile':profile})
+
+
 
 
 @login_required
@@ -205,10 +211,18 @@ def edit_student_profile(request):
 
 
 
-@login_required 
+
+
+@login_required
 def apply_job(request, job_id):
 
+    if not hasattr(request.user, 'studentprofile'):
+        return HttpResponseForbidden(
+            "Only students can apply for jobs."
+        )
+
     job = get_object_or_404(Job, id=job_id)
+
     student = request.user.studentprofile
 
     Application.objects.create(
@@ -217,6 +231,10 @@ def apply_job(request, job_id):
     )
 
     return redirect('job_detail', job_id=job.id)
+
+
+    
+
 
 
 
@@ -234,11 +252,25 @@ def my_application(request):
 @login_required
 def job_applicants(request, job_id):
 
-    job = get_object_or_404(Job, id=job_id)
+    if not hasattr(request.user, 'companyprofile'):
+        return HttpResponseForbidden(
+            "You are not allowed to access this page."
+        )
+
+    company = request.user.companyprofile
+
+    job = get_object_or_404(
+        Job,
+        id=job_id,
+        company=company
+    )
 
     applications = Application.objects.filter(
         job=job
-    ).select_related('student', 'student__user')
+    ).select_related(
+        'student',
+        'student__user'
+    )
 
     return render(
         request,
@@ -262,12 +294,21 @@ def my_jobs(request):
 
 
 
+
 @login_required
 def update_application_status(request, application_id):
 
+    if not hasattr(request.user, 'companyprofile'):
+        return HttpResponseForbidden(
+            "You are not allowed to access this page."
+        )
+
+    company = request.user.companyprofile
+
     application = get_object_or_404(
         Application,
-        id=application_id
+        id=application_id,
+        job__company=company
     )
 
     if request.method == 'POST':
@@ -329,4 +370,148 @@ def edit_company_profile(request):
         request,
         'core/edit_company_profile.html',
         {'form': form}
+    )
+
+
+
+
+
+
+
+
+@login_required
+def student_dashboard(request):
+
+    if not hasattr(request.user, 'studentprofile'):
+        return HttpResponseForbidden(
+            "You are not allowed to access this page."
+        )
+
+    return render(
+        request,
+        'core/student_dashboard.html'
+    )
+
+
+
+
+
+@login_required
+def company_dashboard(request):
+
+    if not hasattr(request.user, 'companyprofile'):
+        return HttpResponseForbidden(
+            "You are not allowed to access this page."
+        )
+
+    return render(
+        request,
+        'core/company_dashboard.html'
+    )
+
+
+
+
+
+
+
+
+
+
+@login_required
+def edit_job(request, job_id):
+
+    if not hasattr(request.user, 'companyprofile'):
+        return HttpResponseForbidden(
+            "You are not allowed to access this page."
+        )
+
+    company = request.user.companyprofile
+
+    job = get_object_or_404(
+        Job,
+        id=job_id,
+        company=company
+    )
+
+    if request.method == 'POST':
+
+        form = JobForm(
+            request.POST,
+            instance=job
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect('my_jobs')
+
+    else:
+        form = JobForm(instance=job)
+
+    return render(
+        request,
+        'core/edit_job.html',
+        {'form': form}
+    )
+
+
+
+
+
+
+
+@login_required
+def delete_job(request, job_id):
+
+    if not hasattr(request.user, 'companyprofile'):
+        return HttpResponseForbidden(
+            "You are not allowed to access this page."
+        )
+
+    company = request.user.companyprofile
+
+    job = get_object_or_404(
+        Job,
+        id=job_id,
+        company=company
+    )
+
+    if request.method == 'POST':
+        job.delete()
+        return redirect('my_jobs')
+
+    return render(
+        request,
+        'core/delete_job.html',
+        {'job': job}
+    )
+
+
+
+
+
+
+
+@login_required
+def admin_dashboard(request):
+
+    if not request.user.is_superuser:
+        return HttpResponseForbidden(
+            "You are not allowed to access this page."
+        )
+
+    total_students = StudentProfile.objects.count()
+    total_companies = CompanyProfile.objects.count()
+    total_jobs = Job.objects.count()
+    total_applications = Application.objects.count()
+
+    return render(
+        request,
+        'core/admin_dashboard.html',
+        {
+            'total_students': total_students,
+            'total_companies': total_companies,
+            'total_jobs': total_jobs,
+            'total_applications': total_applications,
+        }
     )

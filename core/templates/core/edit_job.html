@@ -1,15 +1,15 @@
 {% extends "core/base.html" %}
 
-{% block title %}Post a Job - CareerHub{% endblock %}
+{% block title %}Edit Job - CareerHub{% endblock %}
 
 {% block content %}
 
 <div class="container">
 
     <div class="mb-4">
-        <h1 class="fw-bold">Post a New Job</h1>
+        <h1 class="fw-bold">Edit Job</h1>
         <p class="text-muted">
-            Create a job or internship opportunity for candidates.
+            Update the details of your job posting.
         </p>
     </div>
 
@@ -27,23 +27,16 @@
 
                     <button
                         type="submit"
-                        class="btn btn-success"
+                        class="btn btn-primary"
                     >
-                        Post Job
+                        Update Job
                     </button>
 
                     <a
                         href="{% url 'my_jobs' %}"
                         class="btn btn-outline-secondary"
                     >
-                        My Jobs
-                    </a>
-
-                    <a
-                        href="{% url 'company_profile' %}"
-                        class="btn btn-outline-primary"
-                    >
-                        Company Profile
+                        Cancel
                     </a>
 
                 </div>

@@ -22,4 +22,18 @@ urlpatterns = [
     path('edit_company_profile/',views.edit_company_profile,name='edit_company_profile'),
 
     path('update-application-status/<int:application_id>/',views.update_application_status,name='update_application_status'),
+    
+
+    path('student_dashboard/',views.student_dashboard,name='student_dashboard'),
+    path('company_dashboard/',views.company_dashboard,name='company_dashboard'),
+    path('edit-job/<int:job_id>/',views.edit_job,name='edit_job'),
+    path('delete-job/<int:job_id>/',views.delete_job,name='delete_job'),
+    path('admin-dashboard/',views.admin_dashboard,name='admin_dashboard'),
+    
+    
 ]
+
+
+
+
+

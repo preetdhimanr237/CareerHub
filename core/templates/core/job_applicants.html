@@ -1,66 +1,192 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Applicants</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h2>Applicants for {{ job.title }}</h2>
+{% block title %}Applicants - CareerHub{% endblock %}
 
-    {% for application in applications %}
+{% block content %}
 
-        <div>
-            <h3>{{ application.student.user.username }}</h3>
+<div class="container">
 
-            <p>
-                Education:
-                {{ application.student.education }}
-            </p>
+    <!-- Page Heading -->
+    <div class="mb-4">
+        <h1 class="fw-bold">
+            Applicants
+        </h1>
 
-            <p>
-                Skills:
-                {{ application.student.skills }}
-            </p>
+        <p class="text-muted mb-0">
+            Applicants for:
+            <strong>{{ job.title }}</strong>
+        </p>
+    </div>
 
-            <p>
-                Location:
-                {{ application.student.location }}
-            </p>
 
-            {% if application.student.resume %}
-                <p>
-                    <a href="{{ application.student.resume.url }}" target="_blank">
-                        View Resume
-                    </a>
-                </p>
-            {% endif %}
+    {% if applications %}
 
-            <p>
-                Status: {{ application.status }}
-            </p>
+        <div class="row g-4">
 
-            <form method="POST" action="{% url 'update_application_status' application.id %}">
-                {% csrf_token %}
+            {% for application in applications %}
 
-                <select name="status">
-                    <option value="Pending">Pending</option>
-                    <option value="Shortlisted">Shortlisted</option>
-                    <option value="Rejected">Rejected</option>
-                </select>
+                <div class="col-md-6">
 
-                <button type="submit">Update Status</button>
-            </form>
+                    <div class="card shadow-sm h-100">
 
-            <hr>
+                        <div class="card-body">
+
+                            <!-- Student -->
+                            <h4 class="fw-bold">
+                                {{ application.student.user.username }}
+                            </h4>
+
+
+                            <!-- Student Details -->
+                            <p class="mb-2">
+                                <strong>Education:</strong>
+                                {{ application.student.education }}
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Skills:</strong>
+                                {{ application.student.skills }}
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Location:</strong>
+                                {{ application.student.location }}
+                            </p>
+
+                            <p class="text-muted">
+                                Applied on:
+                                {{ application.applied_at }}
+                            </p>
+
+
+                            <!-- Resume -->
+                            {% if application.student.resume %}
+
+                                <a
+                                    href="{{ application.student.resume.url }}"
+                                    target="_blank"
+                                    class="btn btn-outline-primary mb-3"
+                                >
+                                    View Resume
+                                </a>
+
+                            {% else %}
+
+                                <p class="text-muted">
+                                    Resume not uploaded.
+                                </p>
+
+                            {% endif %}
+
+
+                            <hr>
+
+
+                            <!-- Current Status -->
+                            <p>
+                                <strong>Current Status:</strong>
+
+                                {% if application.status == "Pending" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+
+                                {% elif application.status == "Shortlisted" %}
+
+                                    <span class="badge bg-success">
+                                        Shortlisted
+                                    </span>
+
+                                {% elif application.status == "Rejected" %}
+
+                                    <span class="badge bg-danger">
+                                        Rejected
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        {{ application.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </p>
+
+
+                            <!-- Update Status -->
+                            <form
+                                method="POST"
+                                action="{% url 'update_application_status' application.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <label class="form-label">
+                                    Update Status
+                                </label>
+
+                                <select
+                                    name="status"
+                                    class="form-select mb-3"
+                                >
+
+                                    <option value="Pending">
+                                        Pending
+                                    </option>
+
+                                    <option value="Shortlisted">
+                                        Shortlisted
+                                    </option>
+
+                                    <option value="Rejected">
+                                        Rejected
+                                    </option>
+
+                                </select>
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    Update Status
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
         </div>
 
-    {% empty %}
+    {% else %}
 
-        <p>No applicants yet.</p>
+        <!-- No Applicants -->
+        <div class="text-center py-5">
 
-    {% endfor %}
+            <h3>No Applicants Yet</h3>
 
-</body>
-</html>
+            <p class="text-muted">
+                No student has applied for this job yet.
+            </p>
+
+            <a
+                href="{% url 'my_jobs' %}"
+                class="btn btn-primary"
+            >
+                Back to My Jobs
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

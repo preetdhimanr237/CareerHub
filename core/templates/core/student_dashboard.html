@@ -1,0 +1,156 @@
+{% extends "core/base.html" %}
+
+{% block title %}Student Dashboard - CareerHub{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <!-- Welcome -->
+    <div class="mb-4">
+        <h1 class="fw-bold">
+            Student Dashboard
+        </h1>
+
+        <p class="text-muted">
+            Welcome, {{ request.user.username }}
+        </p>
+    </div>
+
+
+    <!-- Dashboard Cards -->
+    <div class="row g-4">
+
+        <!-- Profile -->
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+                        My Profile
+                    </h4>
+
+                    <p class="card-text text-muted">
+                        View and update your education,
+                        skills, resume and other details.
+                    </p>
+
+                    <a
+                        href="{% url 'student_profile' %}"
+                        class="btn btn-primary"
+                    >
+                        View Profile
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Browse Jobs -->
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+                        Browse Jobs
+                    </h4>
+
+                    <p class="card-text text-muted">
+                        Search and find jobs and internships
+                        according to your requirements.
+                    </p>
+
+                    <a
+                        href="{% url 'job_list' %}"
+                        class="btn btn-success"
+                    >
+                        Browse Jobs
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Applications -->
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+                        My Applications
+                    </h4>
+
+                    <p class="card-text text-muted">
+                        Track the jobs you have applied for
+                        and check their current status.
+                    </p>
+
+                    <a
+                        href="{% url 'my_application' %}"
+                        class="btn btn-warning"
+                    >
+                        My Applications
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="card shadow-sm mt-5">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold">
+                Quick Actions
+            </h4>
+
+            <div class="mt-3">
+
+                <a
+                    href="{% url 'job_list' %}"
+                    class="btn btn-outline-primary me-2"
+                >
+                    Find Jobs
+                </a>
+
+                <a
+                    href="{% url 'student_profile' %}"
+                    class="btn btn-outline-dark me-2"
+                >
+                    Profile
+                </a>
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="btn btn-outline-danger"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

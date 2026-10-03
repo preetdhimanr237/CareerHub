@@ -1,43 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Jobs</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h2>My Jobs</h2>
+{% block title %}My Jobs - CareerHub{% endblock %}
 
-    {% for job in jobs %}
+{% block content %}
 
+<div class="container">
+
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3>{{ job.title }}</h3>
-
-            <p>
-                Location: {{ job.location }}
+            <h1 class="fw-bold">My Jobs</h1>
+            <p class="text-muted mb-0">
+                Manage the jobs posted by your company.
             </p>
-
-            <p>
-                Salary: {{ job.salary }}
-            </p>
-
-            <p>
-                Job Type: {{ job.job_type }}
-            </p>
-
-            <a href="{% url 'job_applicants' job.id %}">
-                <button>View Applicants</button>
-            </a>
-
-            <hr>
         </div>
 
-    {% empty %}
+        <a href="{% url 'create_job' %}" class="btn btn-success">
+            + Post New Job
+        </a>
+    </div>
 
-        <p>No jobs posted yet.</p>
 
-    {% endfor %}
+    {% if jobs %}
 
-</body>
-</html>
+        <div class="row g-4">
+
+            {% for job in jobs %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body">
+
+                            <!-- Job Title -->
+                            <h4 class="card-title fw-bold">
+                                {{ job.title }}
+                            </h4>
+
+                            <!-- Job Information -->
+                            <p class="mb-2">
+                                <strong>Location:</strong>
+                                {{ job.location }}
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Salary:</strong>
+                                {{ job.salary }}
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Job Type:</strong>
+                                {{ job.job_type }}
+                            </p>
+
+                            <p class="text-muted small">
+                                Posted on: {{ job.created_at }}
+                            </p>
+
+
+                            <hr>
+
+
+                            <!-- Actions -->
+                            <div class="d-grid gap-2">
+
+                                <a
+                                    href="{% url 'job_applicants' job.id %}"
+                                    class="btn btn-primary"
+                                >
+                                    View Applicants
+                                </a>
+
+                                <a
+                                    href="{% url 'edit_job' job.id %}"
+                                    class="btn btn-outline-warning"
+                                >
+                                    Edit Job
+                                </a>
+
+                                <a
+                                    href="{% url 'delete_job' job.id %}"
+                                    class="btn btn-outline-danger"
+                                >
+                                    Delete Job
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- No Jobs -->
+        <div class="text-center py-5">
+
+            <h3>No Jobs Posted Yet</h3>
+
+            <p class="text-muted">
+                You haven't posted any jobs yet.
+            </p>
+
+            <a
+                href="{% url 'create_job' %}"
+                class="btn btn-success"
+            >
+                Post Your First Job
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
